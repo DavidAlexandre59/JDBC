@@ -1,0 +1,42 @@
+Créer une table
+Avant d’établir la connexion, créons d’abord une table dans la base de données PostgreSQL. Voici la requête SQL pour créer une table.
+
+CREATE DATABASE test;
+CREATE TABLE person(
+     id PRIMARY KEY, 
+     name VARCHAR(20) NOT NULL, 
+     address VARCHAR(255) NOT NULL
+);
+ 
+ 
+
+Exemple: Connecter une application Java à une base de données PostgreSQL
+Dans cet exemple, nous nous connectons à une base de données PostgreSQL et récupérerons des données de la table ‘person’. Ici, le nom d’utilisateur est postgres et le mot de passe est postgres.
+
+import java.sql.*;
+public class ConnectPostgreSQL
+{
+  public static void main(String args[])
+  {
+    try
+    {
+      //étape 1: charger la classe de driver
+      Class.forName("org.postgresql.Driver");
+      //étape 2: créer l'objet de connexion
+      Connection conn = DriverManager.getConnection(
+      "jdbc:postgresql://localhost:5432/test","postgres","postgres");
+      //étape 3: créer l'objet statement 
+      Statement stmt = conn.createStatement();
+      ResultSet res = stmt.executeQuery("SELECT * FROM person");
+      //étape 4: exécuter la requête
+      while(res.next())
+        System.out.println(res.getInt(1)+"  "+res.getString(2)
+        +"  "+res.getString(3));
+      //étape 5: fermez l'objet de connexion
+      conn.close();
+    }
+    catch(Exception e){ 
+      System.out.println(e);
+    }
+  }
+}
